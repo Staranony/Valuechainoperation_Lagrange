@@ -1,17 +1,22 @@
+SRCDIR = src
+INCDIR = include
+OBJDIR = obj
+BINDIR = bin
 CC = gcc
-CFLAGS = -O3 -Wall -Wextra
 
-TARGET = laGrange
-SRCS = main.c laGrange_2.c
-OBJS = $(SRCS:.c=.o)
+CFLAGS = -O3 -Wall -Wextra -I$(INCDIR)
+
+TARGET = $(BINDIR)/laGrange
+
+SRCS = $(wildcard $(SRCDIR)/*.c)
+OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
+	@mkdir -p $(BINDIR)
 	$(CC) $(CFLAGS) -o $@ $^
 
-%.o: %.c
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
+	@mkdir -p $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
-
-clean:
-	rm -f $(OBJS) $(TARGET)
